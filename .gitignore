@@ -1,0 +1,17 @@
+*-autoloads.el
+/.cask
+/.hive-maint
+/private
+/elpa
+/var
+*.elc
+*.el~
+*.org~
+/auto-save-list/
+/backups/
+bookmarks
+projectile-bookmarks.eld
+.org-id-locations
+/snippets
+/transient
+/org-gcal

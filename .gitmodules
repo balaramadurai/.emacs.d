@@ -1,0 +1,9 @@
+[submodule "plugin/awesome-tab"]
+	path = plugin/awesome-tab
+	url = https://github.com/manateelazycat/awesome-tab.git
+[submodule "plugin/emacs-mini-modeline"]
+	path = plugin/emacs-mini-modeline
+	url = https://github.com/kiennq/emacs-mini-modeline
+[submodule "plugin/tufte-org-mode"]
+	path = plugin/tufte-org-mode
+	url = https://github.com/tsdye/tufte-org-mode

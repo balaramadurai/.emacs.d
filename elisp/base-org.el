@@ -49,6 +49,7 @@
      "d"       '(:ignore t :wk "dates")
      "ds"      'org-schedule
      "dd"      'org-deadline
+     "o"       'org-open-at-point
      "r"       'org-refile
      "P"       'org-set-property
      "R"       '(:ignore t :which-key "Reviews")
@@ -981,7 +982,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 (setq org-structure-template-alist
       (quote(("q" . "QUOTE")
 	     ("v" . "VERSE")
-	     ("muse" . "SRC emacs-lisp \n(use-package ?\n\n\n :diminish\n; :general\n; :config\n)\n")
+	     ("muse" . "SRC emacs-lisp :tangle ~/.emacs.d/elisp/base-extensions.el \n(use-package ?\n\n\n :diminish\n; :general\n; :config\n)\n")
 	     ("m" . "SRC emacs-lisp")
 	     ("r" . "SRC R :results output :session *R* :exports both")
 	     ("R" . "SRC R :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400 :session *R*")
@@ -1090,19 +1091,6 @@ See `org-capture-templates' for more information."
 ; :general
 ; :config
 )
-
-(use-package org-bullets
-  :load-path "~/.emacs.d/plugin/org-bullets.el"
-  :custom
-  (org-bullets-bullet-list '("◉" "☯" "○" "☯" "✸" "☯" "✿" "☯" "✜" "☯" "◆" "☯" "▶"))
-  (org-ellipsis "⤵")
-  :hook (org-mode . org-bullets-mode))
-(font-lock-add-keywords 'org-mode
-			'(("^ *\\([-]\\) "
-			   (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-(font-lock-add-keywords 'org-mode
-			'(("^ *\\([+]\\) "
-			   (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◦"))))))
 
 (provide 'base-org)
 ;;; base-org ends here

@@ -1,100 +1,20 @@
-(use-package sml-mode
+(use-package poet-theme)
 
+(use-package spacemacs-common
+    :ensure spacemacs-theme
+    )
 
- :diminish
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)
 ; :general
-; :config
+ :config
+(setq doom-modeline-buffer-file-name-style 'auto)
+(setq doom-modeline-minor-modes nil)
+(setq doom-modeline-enable-word-count t)
+(setq doom-modeline-continuous-word-count-modes '(org-mode))
+(setq doom-modeline-modal-icon t)
+(setq doom-modeline-bar-width 3)
 )
-
-;; I'm activating mini-modeline after smart-mode-line
-(use-package mini-modeline
-  :load-path "~/.emacs.d/plugin/emacs-mini-modeline"
-  :after sml-mode
-  :config
-  (display-time-mode t)
-  (winum-mode t)
-  (setq display-time-string-forms
-        '((propertize (format-time-string "%H:%M" now) 'face '((:background "#140004" :foreground "green")))))
-  ;;   (setq mini-modeline-r-format
-  ;; 	'("%e"
-  ;; 	  mode-line-front-space
-  ;; 	  ;; mode-line-mule-info
-  ;; 	  mode-line-client
-  ;;           my--mode-line-winum
-  ;; 	  mode-line-modified
-  ;; ;	  " "
-  ;; ;	  display-time-string
-  ;; ;	  " "
-  ;; 	  mode-line-remote
-  ;; 	  mode-line-frame-identification
-  ;; 	  ;; mode-line-buffer-identification
-  ;; 	  " "
-  ;; 	  mode-line-position
-  ;; 	  (vc-mode vc-mode)
-  ;; 	  " "
-  ;; 	  evil-mode-line-tag
-  ;; 	  ;; mode-line-modes
-  ;; 	  mode-line-misc-info
-  ;; 	  mode-line-end-spaces))
-  (defun my--pdfview-page-number ()
-    (format "(%d/%d)"
-	    (eval `(doc-view-current-page))
-	    (doc-view-active-pages)))
-
-  (defvar my--mode-line-line-column
-    '(:eval (if (eq major-mode 'doc-view-mode)
-		(my--pdfview-page-number)
-	      (if (and
-		   (boundp 'column-number-indicator-zero-based)
-		   (not column-number-indicator-zero-based))
-		  "(%l:%2c)"
-		"(%l:%2c)"))))
-
-  (defvar my--mode-line-pomodoro
-    '(:eval
-      (if (eq my--selected-window (selected-window))
-	  `,pomodoro-mode-line-string)))
-
-  (defvar my--mode-line-eyebrowse
-    '(:eval (eyebrowse-mode-line-indicator)))
-
-  (defvar my--mode-line-winum
-    '(:eval (winum-get-number-string)))
-
-  (defvar my--mode-line-evil-tag
-    '(:eval evil-mode-line-tag))
-
-  (setq-default mini-modeline-r-format
-		(list
-		 mode-line-front-space
-		 "["
-		 my--mode-line-winum
-		 "]"
-		 " %*"
-		 my--mode-line-evil-tag
-		 ;; line and column
-		 my--mode-line-line-column
-		 '(vc-mode vc-mode)
-		 mode-line-process
-		 ;;global-mode-string, org-timer-set-timer in org-mode need this
-		 "%M"
-		 " "
-		 my--mode-line-pomodoro
-		 ))
-
-  (defvar my--selected-window nil)
-
-  (defun my--record-selected-window ()
-    (setq my--selected-window (selected-window)))
-
-  (defun my--update-all ()
-    (force-mode-line-update t))
-
-  (add-hook 'post-command-hook 'my--record-selected-window)
-
-  (add-hook 'buffer-list-update-hook 'my--update-all)
-  (mini-modeline-mode t)
-  )
 
 (global-prettify-symbols-mode +1)
 (setq org-ellipsis "▼")
@@ -103,8 +23,8 @@
               (lambda ()
                 ;; (push '("TODO"  . ?⏹) prettify-symbols-alist)
                 (push '("NEXT"  . ?☞) prettify-symbols-alist)
-                (push '("MEETING"  . ?📲) prettify-symbols-alist)
-                (push '("DONE"  . ?✓) prettify-symbols-alist)
+                (push '("MEETING"  . ?會) prettify-symbols-alist)
+                ;; (push '("DONE"  . ?✓) prettify-symbols-alist)
                 (push '("CANCELLED"  . ?✘) prettify-symbols-alist)
 ))
 (add-hook 'org-mode-hook (lambda ()

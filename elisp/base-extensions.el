@@ -59,6 +59,7 @@
     ;; Applications
     "ad"   'dired
 ;    "ac"   'calendar
+    "as"   'ansi-term
 
     ":"    'shell-command
 
@@ -129,6 +130,14 @@
       "/"   'isearch-forward)
 
     (general-def 'normal package-menu-mode-map
+      "i"   'package-menu-mark-install
+      "U"   'package-menu-mark-upgrades
+      "d"   'package-menu-mark-delete
+      "u"   'package-menu-mark-unmark
+      "x"   'package-menu-execute
+      "q"   'quit-window)
+
+    (general-def 'normal term-mode-map
       "i"   'package-menu-mark-install
       "U"   'package-menu-mark-upgrades
       "d"   'package-menu-mark-delete
@@ -207,23 +216,27 @@
  :hook helm-mode-hook
 )
 
-(use-package files
-  :ensure nil
-  :hook
-  (before-save . delete-trailing-whitespace)
-  :custom
-  ;; backup settings
-  (backup-by-copying t "don't clobber symlinks")
-  (delete-old-versions t)
-  (kept-new-versions 6)
-  (kept-old-versions 2)
-  (version-control t "use versioned backups")
-  :config
-  (setq confirm-kill-processes nil))
+;; backup settings
+(setq delete-old-versions t)
+(setq kept-new-versions 6)
+(setq kept-old-versions 2)
+(setq version-control t)
 
 (use-package beancount
     :load-path "~/.emacs.d/plugin"
 )
+
+;;EMMS
+(use-package emms
+  :config
+  (progn
+    (require 'emms-player-simple)
+    (require 'emms-source-file)
+    (require 'emms-source-playlist)
+    (require 'emms-player-mplayer)
+    (setq emms-player-list '(emms-player-mplayer))
+    (setq emms-source-file-default-directory "~/Music/")
+    (emms-add-directory-tree "~/Music/")))
 
 (use-package evil
 
@@ -300,6 +313,11 @@
     )
   )
 
+(use-package openwith
+  :config
+  (openwith-mode t)
+  (setq openwith-associations '(("\\.pdf\\'" "xreader" (file)))))
+
 (use-package restart-emacs
 
  :config
@@ -314,45 +332,39 @@
      )
    )
 
-(use-package ox-tufte
+(defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
+  (if (memq (process-status proc) '(signal exit))
+      (let ((buffer (process-buffer proc)))
+        ad-do-it
+        (kill-buffer buffer))
+    ad-do-it))
+(ad-activate 'term-sentinel)
 
+(use-package treemacs
+  :general
+  (spacemacs-lite/set-leader-keys "at" 'treemacs
+                                  "0"  'treemacs-select-window)
+  :config
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode t)
+    (setq treemacs-wrap-around t)
+  :bind
+  (:map global-map
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
 
-; :diminish
-; :general
-:config
-(setq safe-local-variable-values
-   (quote
-    ((eval add-hook
-	   (quote after-save-hook)
-	   (quote org-latex-export-to-pdf)
-	   nil t)
-     (org-inline-image-overlays)
-     (org-latex-caption-above)
-     (org-hide-macro-markers . t)
-     (org-fontify-quote-and-verse-blocks . t)
-     (eval org-sbe "latex-link")
-     (eval org-sbe "latex-opt-link")
-     (eval org-sbe "jk-keywords")
-     (eval org-sbe "pdf-process-bibtex")
-     (eval org-sbe "ngz-nbsp")
-     (eval org-sbe "latex-filter-footcites")
-     (eval org-sbe "biblatex-cite-link")
-     (eval org-sbe "biblatex-textcite-link")
-     (eval org-sbe "biblatex-parencite-link")
-     (eval org-sbe "biblatex-sidecite-link")
-     (eval org-sbe "biblatex-multicite-link")
-     (eval org-sbe "biblatex-footcite-link")
-     (eval org-sbe "tufte-ebib-setup")
-     (eval org-sbe "tufte-handout")
-     (eval org-sbe "tufte-book")
-     (eval org-sbe "user-entities")
-     (eval require
-	   (quote ox-tufte-latex)))))
-)
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :config (treemacs-icons-dired-mode))
 
-(use-package ox-tufte-latex
-  :load-path "~/.emacs.d/plugin/tufte-org-mode"
-)
+(use-package treemacs-evil
+  :after treemacs evil)
+
+(use-package treemacs-magit
+  :after treemacs magit)
 
 (use-package winum
 
@@ -387,6 +399,13 @@
     :defer t
     :general
     (spacemacs-lite/set-leader-keys         "ap" '(org-plot/gnuplot :which-key "gnuplot")))
+
+(use-package org-superstar
+					; :general
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+  (setq org-superstar-special-todo-items t)
+  )
 
 (provide 'base-extensions)
 ;;; base-extensions ends here

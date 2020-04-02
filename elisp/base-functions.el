@@ -175,10 +175,10 @@ containing the current file by the default explorer."
 ;    (powerline-reset)
 ))
 
-(defadvice load-theme (before disable-themes-first activate)
-  (disable-all-themes)
+; (defadvice load-theme (before disable-themes-first activate)
+;  (disable-all-themes)
 ;  (powerline-reset)
-)
+; )
 
 ;; Following lines to cycle through themes adapted from ivan's answer on
 ;; https://emacs.stackexchange.com/questions/24088/make-a-function-to-toggle-themes

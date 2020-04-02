@@ -19,16 +19,62 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#fafafa" "#99324b" "#4f894c" "#9a7500" "#3b6ea8" "#97365b" "#398eac" "#2a2a2a"])
+ '(custom-enabled-themes (quote (doom-monokai-classic)))
  '(custom-safe-themes
    (quote
-    ("2925ed246fb757da0e8784ecf03b9523bccd8b7996464e587b081037e0e98001" "aaeb61894d5d3c586d27cee61a3f54493c383733f8d900e05c6fbc8ef6d6bc93" "c53b6a09c7d997c3185cb1598de1d0ff15e1679f5445f9a6cb8b2bf4fc4e565a" "c8d19a09f9d2cb1d6aa6c57e1a86b2dab863cc77a3fc7225a4e60baba96726a1" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "436b185b423b78eb5d110dc23f4b95d78a1f002d156f226b7e6e5b1f6493dda0" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("d74c5485d42ca4b7f3092e50db687600d0e16006d8fa335c69cf4f379dbd0eee" "f2b56244ecc6f4b952b2bcb1d7e517f1f4272876a8c873b378f5cf68e904bd59" "dde8c620311ea241c0b490af8e6f570fdd3b941d7bc209e55cd87884eb733b0e" "229c5cf9c9bd4012be621d271320036c69a14758f70e60385e87880b46d60780" "93ed23c504b202cf96ee591138b0012c295338f38046a1f3c14522d4a64d7308" "51956e440cec75ba7e4cff6c79f4f8c884a50b220e78e5e05145386f5b381f7b" "845103fcb9b091b0958171653a4413ccfad35552bc39697d448941bcbe5a660d" "361f5a2bc2a7d7387b442b2570b0ef35198442b38c2812bf3c70e1e091771d1a" "a83f05e5e2f2538376ea2bfdf9e3cd8b7f7593b16299238c1134c1529503fa88" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" "b11699e28cc2f6c34fa6336e67d443be89fadb6a9b60de0b1594f31340ea87e4" "d0fd069415ef23ccc21ccb0e54d93bdbb996a6cce48ffce7f810826bb243502c" "d4131a682c4436bb5a61103d9a850bf788cbf793f3fd8897de520d20583aeb58" "dbade2e946597b9cda3e61978b5fcc14fa3afa2d3c4391d477bdaeff8f5638c5" "ffba0482d3548c9494e84c1324d527f73ea4e43fff8dfd0e48faa8fc6d5c2bc7" "8f5b54bf6a36fe1c138219960dd324aad8ab1f62f543bed73ef5ad60956e36ae" "3e83abe75cebf5621e34ce1cbe6e12e4d80766bed0755033febed5794d0c69bf" "cbd85ab34afb47003fa7f814a462c24affb1de81ebf172b78cb4e65186ba59d2" "801a567c87755fe65d0484cb2bded31a4c5bb24fd1fe0ed11e6c02254017acb2" "ac2ca460db1668a48c35c4d0fd842e5d2ce2d4e8567a7903b76438f2750826cd" "c19e5291471680e72d8bd98f8d6e84f781754a9e8fc089536cda3f0b7c3550e3" "6973f93f55e4a6ef99aa34e10cd476bc59e2f0c192b46ec00032fe5771afd9ad" "2925ed246fb757da0e8784ecf03b9523bccd8b7996464e587b081037e0e98001" "aaeb61894d5d3c586d27cee61a3f54493c383733f8d900e05c6fbc8ef6d6bc93" "c53b6a09c7d997c3185cb1598de1d0ff15e1679f5445f9a6cb8b2bf4fc4e565a" "c8d19a09f9d2cb1d6aa6c57e1a86b2dab863cc77a3fc7225a4e60baba96726a1" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "436b185b423b78eb5d110dc23f4b95d78a1f002d156f226b7e6e5b1f6493dda0" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+ '(dashboard-items (quote ((recents . 5))))
+ '(doom-modeline-mode t)
+ '(fci-rule-color "#9e9e9e")
+ '(helm-completion-style (quote emacs))
+ '(helm-ff-lynx-style-map t)
+ '(jdee-db-active-breakpoint-face-colors (cons "#fafafa" "#3b6ea8"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#fafafa" "#4f894c"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#fafafa" "#bdbdbd"))
+ '(line-spacing 0.2)
+ '(objed-cursor-color "#99324b")
  '(org-duration-format (quote (("h") (special . 2))))
+ '(org-ellipsis "⤵")
+ '(org-latex-default-packages-alist nil)
  '(package-selected-packages
    (quote
-    (transient helm-core alert org-re-reveal calfw calfw-cal calfw-ical calfw-org dashboard deferred org-tracktable ox-hugo org-fancy-priorities org-present org-pomodoro org-clock-convenience org-plus-contrib org-gcal gnuplot request-deferred zoom wc-mode writegood-mode writeroom-mode spacemacs-theme winum toc-org shell-pop smartparens restart-emacs typo olivetti google-translate define-word fountain-mode evil-magit evil-tutor evil ess easy-hugo company helm-descbinds helm-projectile helm-swoop helm which-key general diminish spaceline poet-theme auto-compile use-package))))
+    (doom-modeline doom doom-themes autumn-light-theme almost-mono-themes tao-theme spacemacs-theme spaceline-all-the-icons emms org-superstar openwith treemacs-magit treemacs-projectile treemacs-evil treemacs treemacs-icons-dired transient helm-core alert org-re-reveal dashboard deferred org-tracktable ox-hugo org-fancy-priorities org-present org-pomodoro org-clock-convenience org-plus-contrib gnuplot request-deferred zoom wc-mode writegood-mode writeroom-mode winum toc-org shell-pop smartparens restart-emacs typo olivetti google-translate define-word fountain-mode evil-magit evil-tutor evil ess easy-hugo company helm-descbinds helm-projectile helm-swoop helm which-key general diminish spaceline poet-theme auto-compile use-package)))
+ '(pdf-view-midnight-colors (cons "#2a2a2a" "#fafafa"))
+ '(rustic-ansi-faces
+   ["#fafafa" "#99324b" "#4f894c" "#9a7500" "#3b6ea8" "#97365b" "#398eac" "#2a2a2a"])
+ '(vc-annotate-background "#fafafa")
+ '(vc-annotate-color-map
+   (list
+    (cons 20 "#4f894c")
+    (cons 40 "#688232")
+    (cons 60 "#817b19")
+    (cons 80 "#9a7500")
+    (cons 100 "#a0640c")
+    (cons 120 "#a65419")
+    (cons 140 "#ac4426")
+    (cons 160 "#a53f37")
+    (cons 180 "#9e3a49")
+    (cons 200 "#97365b")
+    (cons 220 "#973455")
+    (cons 240 "#983350")
+    (cons 260 "#99324b")
+    (cons 280 "#a25467")
+    (cons 300 "#ab7784")
+    (cons 320 "#b49aa0")
+    (cons 340 "#9e9e9e")
+    (cons 360 "#9e9e9e")))
+ '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(evil-goggles-change-face ((t (:inherit diff-removed))))
+ '(evil-goggles-delete-face ((t (:inherit diff-removed))))
+ '(evil-goggles-paste-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
+ '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
+ '(evil-goggles-yank-face ((t (:inherit diff-changed)))))

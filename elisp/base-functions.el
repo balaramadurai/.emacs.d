@@ -168,57 +168,6 @@ containing the current file by the default explorer."
   (interactive)
   (switch-to-buffer "*Messages*"))
 
-(defun disable-all-themes ()
-  "disable all active themes."
-  (dolist (i custom-enabled-themes)
-    (disable-theme i)
-;    (powerline-reset)
-))
-
-; (defadvice load-theme (before disable-themes-first activate)
-;  (disable-all-themes)
-;  (powerline-reset)
-; )
-
-;; Following lines to cycle through themes adapted from ivan's answer on
-;; https://emacs.stackexchange.com/questions/24088/make-a-function-to-toggle-themes
-(setq my/themes (custom-available-themes))
-(setq my/themes-index 0)
-
-(defun my/cycle-theme ()
-  "Cycles through my themes."
-  (interactive)
-  (setq my/themes-index (% (1+ my/themes-index) (length my/themes)))
-  (my/load-indexed-theme))
-
-(defun my/load-indexed-theme ()
-  (load-theme (nth my/themes-index my/themes)))
-
-(defun load-spacemacs-dark-theme ()
-  "Loads `spacemacs-dark' theme"
-  (interactive)
-  (load-theme 'spacemacs-dark))
-
-(defun load-spacemacs-light-theme ()
-  "Loads `spacemacs-light' theme"
-  (interactive)
-  (load-theme 'spacemacs-light))
-
-(defun load-poet-theme ()
-  "Loads `poet' theme"
-  (interactive)
-  (load-theme 'poet))
-
-(defun load-leuven-theme ()
-  "Loads `leuven' theme"
-  (interactive)
-  (load-theme 'leuven))
-
-(defun load-dichromacy-theme ()
-  "Loads `dichromacy' theme"
-  (interactive)
-  (load-theme 'dichromacy))
-
 (defun org-babel-tangle-append ()
   "Append source code block at point to its tangle file.
 The command works like `org-babel-tangle' with prefix arg

@@ -1,20 +1,5 @@
-(use-package poet-theme)
-
-(use-package spacemacs-common
-    :ensure spacemacs-theme
-    )
-
 (use-package doom-modeline
-  :init (doom-modeline-mode 1)
-; :general
- :config
-(setq doom-modeline-buffer-file-name-style 'auto)
-(setq doom-modeline-minor-modes nil)
-(setq doom-modeline-enable-word-count t)
-(setq doom-modeline-continuous-word-count-modes '(org-mode))
-(setq doom-modeline-modal-icon t)
-(setq doom-modeline-bar-width 3)
-)
+  :config (doom-modeline-mode 1))
 
 (global-prettify-symbols-mode +1)
 (setq org-ellipsis "▼")

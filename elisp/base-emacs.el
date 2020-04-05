@@ -28,6 +28,7 @@
 (set-face-attribute 'default nil :family "Iosevka" :height 95)
 (set-face-attribute 'fixed-pitch nil :family "Iosevka" :height 95)
 (set-face-attribute 'variable-pitch nil :family "Baskerville" :height 110)
+
 					;  (flyspell-mode 1)        ;; Catch Spelling mistakes
 (blink-cursor-mode 0)    ;; Reduce visual noise
 

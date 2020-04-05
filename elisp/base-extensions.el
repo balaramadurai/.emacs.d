@@ -49,7 +49,6 @@
     "P"    '(:ignore t :which-key "Packages")
     "q"    '(:ignore t :which-key "quit")
     "s"    '(:ignore t :which-key "search")
-    "t"    '(:ignore t :which-key "themes")
     "u"    (general-simulate-key "C-u" :which-key "universal")
     "w"    '(:ignore t :which-key "window")
     "x"    '(:ignore t :which-key "text")
@@ -108,16 +107,6 @@
     ;; quit emacs
     "qq"   'kill-emacs
 
-    ;; Theme operations
-    "tn"  'my/cycle-theme
-    "tt"  'load-theme
-    "tl"  'load-leuven-theme
-    "td"  'load-dichromacy-theme
-    "tp"  'load-poet-theme
-    "ts"  '(:ignore t :wk "spacemacs themes")
-    "tsd" 'load-spacemacs-dark-theme
-    "tsl" 'load-spacemacs-light-theme
-
     ;; window management
     "wm"   'delete-other-windows
     "w/"   'split-window-horizontally
@@ -159,61 +148,78 @@
   (setq which-key-echo-keystrokes 0.18)
   )
 
-;; Helm
-(use-package helm
-
-  :diminish (helm-mode . " Ⓗ")
+(use-package ivy
+  :diminish (ivy-mode . "")
   :general
   (spacemacs-lite/set-leader-keys
-    "SPC"  'helm-M-x
-    "bb"   'helm-mini
-    "ff"   'helm-find-files
-    "fr"   'helm-recentf
-    "ik"   'helm-show-kill-ring
-    )
-  (general-def 'emacs org-agenda-mode-map
-    "<SPC><SPC>"  '(helm-M-x :wk "M-x")
-    "<SPC>bb"   'helm-mini
-    "<SPC>ff"   'helm-find-files
-    )
-
+   "fr" 'counsel-recentf
+   "rl" 'ivy-resume
+   "bb" 'ivy-switch-buffer)
   :config
-  (helm-mode 1)
-  ;; https://github.com/emacs-helm/helm/issues/2175 - for arrows to go back or forward in find files
-  (customize-set-variable 'helm-ff-lynx-style-map t)
-
-  ;; https://emacs.stackexchange.com/questions/33727/how-does-spacemacs-allow-tab-completion-in-helm
-  (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
-  (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
-  (define-key helm-map (kbd "C-z") #'helm-select-action)
+  (ivy-mode 1)
+  (setq-default ivy-initial-inputs-alist nil)
+  (setq ivy-count-format ""
+       ivy-display-style nil
+       ivy-fixed-height-minibuffer t
+       ivy-height 20
+       ivy-re-builders-alist '((t . ivy--regex-plus))
+       ivy-format-functions-alist '((t . ivy-format-function-line)))
   )
 
-(use-package helm-swoop
 
-:general
-(spacemacs-lite/set-leader-keys "ss" 'helm-swoop)
-(general-def '(normal visual emacs motion) "/" 'helm-swoop-without-pre-input)
-)
+(setq ivy-use-virtual-buffers t)
 
-(use-package helm-projectile
+;; Example setting for ivy-views
+(setq ivy-views
+      `(("config {}"
+         (vert
+          (file "~/.emacs.d/README.org")
+          (file "~/.emacs.d/init.el")
+          ))
+        ("kdt {}"
+         (horz
+          (file "~/Google Drive/1 Projects/2020 Karmic Design Thinking/manuscript/KDT-orange.org")))))
+          
+(use-package counsel
+  :diminish (counsel-mode . "")
   :general
   (spacemacs-lite/set-leader-keys
-    "p"    '(:ignore t :wk "projects")
-    "pr"   '(helm-projectile-recentf :wk "recent projects")
-    "pf"   '(helm-projectile-find-file :wk "files")
-    "pd"   '(projectile-dired :wk "directory")
+    "SPC"  'counsel-M-x
+    "ff"   'counsel-find-file
+    "fr"   'counsel-recentf
+    "fL"  'counsel-locate
+    ;; help
+    "?"   'counsel-descbinds
+    ;; insert
+    "iu"  'counsel-unicode-char
+    ;; jump
+    ;; register/ring
+    "ry"  'counsel-yank-pop
+    ;; jumping
+    "sj"  'counsel-imenu
     )
+  (general-def 'emacs org-agenda-mode-map
+    "<SPC><SPC>"  '(counsel-M-x :wk "M-x")
+    "<SPC>bb"   'counsel-switch-buffer
+    "<SPC>ff"   'counsel-find-files
+    )
+  :config
+  (counsel-mode 1)
+  )
 
-)
+(use-package swiper
+  :general
+  (spacemacs-lite/set-leader-keys "ss" 'me/swiper)
+					;  (general-def '(normal visual emacs motion) "/" 'swiper)
+  :config
+  (defun me/swiper ()
+    "`swiper' with string returned by `ivy-thing-at-point' as initial input."
+    (interactive)
+    (swiper (ivy-thing-at-point)))
+  (setq swiper-goto-start-of-match t))
 
-(use-package helm-descbinds
-
-; :diminish
- :general
- (spacemacs-lite/set-leader-keys "?" '(helm-descbinds :wk "show keybindings"))
- :config
- (setq helm-descbinds-window-style 'split)
- :hook helm-mode-hook
+(use-package alda-mode
+:after evil
 )
 
 ;; backup settings
@@ -226,17 +232,11 @@
     :load-path "~/.emacs.d/plugin"
 )
 
-;;EMMS
-(use-package emms
+(use-package company
+
+  :diminish (company-mode . " ⓐ")
   :config
-  (progn
-    (require 'emms-player-simple)
-    (require 'emms-source-file)
-    (require 'emms-source-playlist)
-    (require 'emms-player-mplayer)
-    (setq emms-player-list '(emms-player-mplayer))
-    (setq emms-source-file-default-directory "~/Music/")
-    (emms-add-directory-tree "~/Music/")))
+  (global-company-mode t))
 
 (use-package evil
 
@@ -340,21 +340,42 @@
     ad-do-it))
 (ad-activate 'term-sentinel)
 
+(defvar +treemacs-git-mode 'simple
+  "Type of git integration for `treemacs-git-mode'.
+There are 3 possible values:
+  1) `simple', which highlights only files based on their git status, and is
+     slightly faster,
+  2) `extended', which highlights both files and directories, but requires
+     python,
+  3) `deferred', same as extended, but highlights asynchronously.
+This must be set before `treemacs' has loaded.")
+
 (use-package treemacs
+  :init
+  (setq treemacs-follow-after-init t
+        treemacs-is-never-other-window t
+        treemacs-sorting 'alphabetic-case-insensitive-asc
+        )
+  
   :general
   (spacemacs-lite/set-leader-keys "at" 'treemacs
-                                  "0"  'treemacs-select-window)
+    "0"  'treemacs-select-window)
   :config
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode t)
-    (setq treemacs-wrap-around t)
-  :bind
-  (:map global-map
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+  (treemacs-follow-mode -1)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode t)
+  (setq treemacs-wrap-around t)
+  (when +treemacs-git-mode
+    ;; If they aren't supported, fall back to simpler methods
+    (when (and (memq +treemacs-git-mode '(deferred extended))
+               (not (executable-find "python3")))
+      (setq +treemacs-git-mode 'simple))
+    (treemacs-git-mode +treemacs-git-mode)
+    (setq treemacs-collapse-dirs
+          (if (memq treemacs-git-mode '(extended deferred))
+              3
+            0)))
+        )
 
 (use-package treemacs-icons-dired
   :after treemacs dired
@@ -373,7 +394,8 @@
   "2" 'winum-select-window-2
   "3" 'winum-select-window-3)
 :config
-(setq winum-auto-setup-mode-line nil)
+  (setq winum-auto-setup-mode-line nil)
+  (winum-mode 1)
 )
 
 (use-package writing-mode

@@ -421,6 +421,7 @@ Initialization of the startup file. I made a design choice of moving to an org f
 (set-face-attribute 'default nil :family "Iosevka" :height 95)
 (set-face-attribute 'fixed-pitch nil :family "Iosevka" :height 95)
 (set-face-attribute 'variable-pitch nil :family "Baskerville" :height 110)
+
 					;  (flyspell-mode 1)        ;; Catch Spelling mistakes
 (blink-cursor-mode 0)    ;; Reduce visual noise
 
@@ -436,161 +437,13 @@ Initialization of the startup file. I made a design choice of moving to an org f
 #+end_src
 
 ** Base Theme
-#+BEGIN_src emacs-lisp :tangle ~/.emacs.d/elisp/base-theme.el
 
-(use-package poet-theme)
-
-(use-package spacemacs-common
-    :ensure spacemacs-theme
-    )
-
-#+END_SRC
-
-*** Modeline
-
-**** Emacs modeline
-#+begin_SRC emacs-lisp :tangle no
-elisp/base-theme.el
-;; I'm activating mini-modeline after smart-mode-line
-(use-package mini-modeline
-  :load-path "~/.emacs.d/plugin/emacs-mini-modeline"
-  :after sml-mode
-  :config
-  (display-time-mode t)
-  (winum-mode t)
-  (setq display-time-string-forms
-        '((propertize (format-time-string "%H:%M" now) 'face '((:background "#140004" :foreground "green")))))
-  ;;   (setq mini-modeline-r-format
-  ;; 	'("%e"
-  ;; 	  mode-line-front-space
-  ;; 	  ;; mode-line-mule-info
-  ;; 	  mode-line-client
-  ;;           my--mode-line-winum
-  ;; 	  mode-line-modified
-  ;; ;	  " "
-  ;; ;	  display-time-string
-  ;; ;	  " "
-  ;; 	  mode-line-remote
-  ;; 	  mode-line-frame-identification
-  ;; 	  ;; mode-line-buffer-identification
-  ;; 	  " "
-  ;; 	  mode-line-position
-  ;; 	  (vc-mode vc-mode)
-  ;; 	  " "
-  ;; 	  evil-mode-line-tag
-  ;; 	  ;; mode-line-modes
-  ;; 	  mode-line-misc-info
-  ;; 	  mode-line-end-spaces))
-  (defun my--pdfview-page-number ()
-    (format "(%d/%d)"
-	    (eval `(doc-view-current-page))
-	    (doc-view-active-pages)))
-
-  (defvar my--mode-line-line-column
-    '(:eval (if (eq major-mode 'doc-view-mode)
-		(my--pdfview-page-number)
-	      (if (and
-		   (boundp 'column-number-indicator-zero-based)
-		   (not column-number-indicator-zero-based))
-		  "(%l:%2c)"
-		"(%l:%2c)"))))
-
-  (defvar my--mode-line-pomodoro
-    '(:eval
-      (if (eq my--selected-window (selected-window))
-	  `,pomodoro-mode-line-string)))
-
-  (defvar my--mode-line-eyebrowse
-    '(:eval (eyebrowse-mode-line-indicator)))
-
-  (defvar my--mode-line-winum
-    '(:eval (winum-get-number-string)))
-
-  (defvar my--mode-line-evil-tag
-    '(:eval evil-mode-line-tag))
-
-  (setq-default mini-modeline-r-format
-		(list
-		 mode-line-front-space
-		 "["
-		 my--mode-line-winum
-		 "]"
-		 " %*"
-		 my--mode-line-evil-tag
-		 ;; line and column
-		 my--mode-line-line-column
-		 '(vc-mode vc-mode)
-		 mode-line-process
-		 ;;global-mode-string, org-timer-set-timer in org-mode need this
-		 "%M"
-		 " "
-		 my--mode-line-pomodoro
-		 ))
-
-  (defvar my--selected-window nil)
-
-  (defun my--record-selected-window ()
-    (setq my--selected-window (selected-window)))
-
-  (defun my--update-all ()
-    (force-mode-line-update t))
-
-  (add-hook 'post-command-hook 'my--record-selected-window)
-
-  (add-hook 'buffer-list-update-hook 'my--update-all)
-  (mini-modeline-mode t)
-  )
-#+end_SRC
-
-#+begin_src emacs-lisp   :tangle no
-elisp/base-theme.el
-;; (use-package    feebleline
-;;   :ensure       t
-;;   :config
-
-;;                 (feebleline-mode 1))
-
-(use-package spaceline
-
-  ;; :disabled t
-  :config
-  (require 'spaceline-config)
-  (setq powerline-default-separator 'wave
-        spaceline-minor-modes-separator " ")
-  (setq spaceline-window-numbers-unicode t)
-  (setq spaceline-org-pomodoro-p t)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-;  (spaceline-toggle-window-number-on)
-  (spaceline-toggle-minor-modes-off)
-  (spaceline-toggle-org-pomodoro-on)
-  (spaceline-toggle-hud-on)
-  (setq powerline-height 20)
- ; (setq display-time-format "%b %d %a %R")
- ; (display-time-mode t)
-  (spaceline-spacemacs-theme)
-  (setq winum-auto-setup-mode-line nil)
-  (winum-mode 1)
-  (powerline-reset)
-  )
-
-#+end_src
-
-**** Doom Modeline
+*** Doom modeline
 #+begin_SRC emacs-lisp :tangle ~/.emacs.d/elisp/base-theme.el 
 (use-package doom-modeline
-  :init (doom-modeline-mode 1)
-; :general
- :config
-(setq doom-modeline-buffer-file-name-style 'auto)
-(setq doom-modeline-minor-modes nil)
-(setq doom-modeline-enable-word-count t)
-(setq doom-modeline-continuous-word-count-modes '(org-mode))
-(setq doom-modeline-modal-icon t)
-(setq doom-modeline-bar-width 3)
-)
-
-
+  :config (doom-modeline-mode 1))
 #+end_SRC
+
 *** Graphical Features
 **** Prettify Symbols
 #+BEGIN_src emacs-lisp   :tangle ~/.emacs.d/elisp/base-theme.el
@@ -753,7 +606,6 @@ From http://www.wisdomandwonder.com/wordpress/wp-content/uploads/2014/03/C3F.htm
     "P"    '(:ignore t :which-key "Packages")
     "q"    '(:ignore t :which-key "quit")
     "s"    '(:ignore t :which-key "search")
-    "t"    '(:ignore t :which-key "themes")
     "u"    (general-simulate-key "C-u" :which-key "universal")
     "w"    '(:ignore t :which-key "window")
     "x"    '(:ignore t :which-key "text")
@@ -812,16 +664,6 @@ From http://www.wisdomandwonder.com/wordpress/wp-content/uploads/2014/03/C3F.htm
     ;; quit emacs
     "qq"   'kill-emacs
 
-    ;; Theme operations
-    "tn"  'my/cycle-theme
-    "tt"  'load-theme
-    "tl"  'load-leuven-theme
-    "td"  'load-dichromacy-theme
-    "tp"  'load-poet-theme
-    "ts"  '(:ignore t :wk "spacemacs themes")
-    "tsd" 'load-spacemacs-dark-theme
-    "tsl" 'load-spacemacs-light-theme
-
     ;; window management
     "wm"   'delete-other-windows
     "w/"   'split-window-horizontally
@@ -868,7 +710,8 @@ From http://www.wisdomandwonder.com/wordpress/wp-content/uploads/2014/03/C3F.htm
 #+END_SRC
 
 *** Helm
-#+BEGIN_src emacs-lisp :tangle ~/.emacs.d/elisp/base-extensions.el
+#+BEGIN_src emacs-lisp :tangle no
+~/.emacs.d/elisp/base-extensions.el
 ;; Helm
 (use-package helm
 
@@ -927,6 +770,87 @@ From http://www.wisdomandwonder.com/wordpress/wp-content/uploads/2014/03/C3F.htm
 )
 #+end_src
 
+*** Ivy
+#+begin_SRC emacs-lisp :tangle ~/.emacs.d/elisp/base-extensions.el 
+(use-package ivy
+  :diminish (ivy-mode . "")
+  :general
+  (spacemacs-lite/set-leader-keys
+   "fr" 'counsel-recentf
+   "rl" 'ivy-resume
+   "bb" 'ivy-switch-buffer)
+  :config
+  (ivy-mode 1)
+  (setq-default ivy-initial-inputs-alist nil)
+  (setq ivy-count-format ""
+       ivy-display-style nil
+       ivy-fixed-height-minibuffer t
+       ivy-height 20
+       ivy-re-builders-alist '((t . ivy--regex-plus))
+       ivy-format-functions-alist '((t . ivy-format-function-line)))
+  )
+
+
+(setq ivy-use-virtual-buffers t)
+
+;; Example setting for ivy-views
+(setq ivy-views
+      `(("config {}"
+         (vert
+          (file "~/.emacs.d/README.org")
+          (file "~/.emacs.d/init.el")
+          ))
+        ("kdt {}"
+         (horz
+          (file "~/Google Drive/1 Projects/2020 Karmic Design Thinking/manuscript/KDT-orange.org")))))
+          
+(use-package counsel
+  :diminish (counsel-mode . "")
+  :general
+  (spacemacs-lite/set-leader-keys
+    "SPC"  'counsel-M-x
+    "ff"   'counsel-find-file
+    "fr"   'counsel-recentf
+    "fL"  'counsel-locate
+    ;; help
+    "?"   'counsel-descbinds
+    ;; insert
+    "iu"  'counsel-unicode-char
+    ;; jump
+    ;; register/ring
+    "ry"  'counsel-yank-pop
+    ;; jumping
+    "sj"  'counsel-imenu
+    )
+  (general-def 'emacs org-agenda-mode-map
+    "<SPC><SPC>"  '(counsel-M-x :wk "M-x")
+    "<SPC>bb"   'counsel-switch-buffer
+    "<SPC>ff"   'counsel-find-files
+    )
+  :config
+  (counsel-mode 1)
+  )
+
+(use-package swiper
+  :general
+  (spacemacs-lite/set-leader-keys "ss" 'me/swiper)
+					;  (general-def '(normal visual emacs motion) "/" 'swiper)
+  :config
+  (defun me/swiper ()
+    "`swiper' with string returned by `ivy-thing-at-point' as initial input."
+    (interactive)
+    (swiper (ivy-thing-at-point)))
+  (setq swiper-goto-start-of-match t))
+#+end_SRC
+
+*** Alda
+#+begin_SRC emacs-lisp :tangle ~/.emacs.d/elisp/base-extensions.el 
+(use-package alda-mode
+:after evil
+)
+
+
+#+end_SRC
 *** Backup
 #+begin_SRC emacs-lisp :tangle ~/.emacs.d/elisp/base-extensions.el
 ;; backup settings
@@ -972,8 +896,7 @@ From http://www.wisdomandwonder.com/wordpress/wp-content/uploads/2014/03/C3F.htm
 #+end_SRC
 
 *** Company
-#+BEGIN_src emacs-lisp  :tangle no
- ~/.emacs.d/elisp/base-extensions.el
+#+BEGIN_src emacs-lisp  :tangle ~/.emacs.d/elisp/base-extensions.el
 (use-package company
 
   :diminish (company-mode . " ⓐ")
@@ -1029,20 +952,6 @@ From http://www.wisdomandwonder.com/wordpress/wp-content/uploads/2014/03/C3F.htm
       )
 #+END_SRC
 
-*** EMMS
-#+begin_SRC emacs-lisp :tangle ~/.emacs.d/elisp/base-extensions.el 
-;;EMMS
-(use-package emms
-  :config
-  (progn
-    (require 'emms-player-simple)
-    (require 'emms-source-file)
-    (require 'emms-source-playlist)
-    (require 'emms-player-mplayer)
-    (setq emms-player-list '(emms-player-mplayer))
-    (setq emms-source-file-default-directory "~/Music/")
-    (emms-add-directory-tree "~/Music/")))
-#+end_SRC
 *** Emoji
 #+begin_SRC emacs-lisp :tangle no
 ~/.emacs.d/elisp/base-extensions.el
@@ -1253,7 +1162,7 @@ For instance pass En as source for English."
    (smartparens-mode))
 #+end_src
 
-*** ANSI-term
+*** Shell ANSI-term
 [2018-12-06 Thu 09:11]
 #+begin_src emacs-lisp  :tangle ~/.emacs.d/elisp/base-extensions.el
 (defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
@@ -1276,21 +1185,42 @@ For instance pass En as source for English."
 
 *** Treemacs
 #+begin_SRC emacs-lisp  :tangle ~/.emacs.d/elisp/base-extensions.el
+(defvar +treemacs-git-mode 'simple
+  "Type of git integration for `treemacs-git-mode'.
+There are 3 possible values:
+  1) `simple', which highlights only files based on their git status, and is
+     slightly faster,
+  2) `extended', which highlights both files and directories, but requires
+     python,
+  3) `deferred', same as extended, but highlights asynchronously.
+This must be set before `treemacs' has loaded.")
+
 (use-package treemacs
+  :init
+  (setq treemacs-follow-after-init t
+        treemacs-is-never-other-window t
+        treemacs-sorting 'alphabetic-case-insensitive-asc
+        )
+  
   :general
   (spacemacs-lite/set-leader-keys "at" 'treemacs
-                                  "0"  'treemacs-select-window)
+    "0"  'treemacs-select-window)
   :config
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode t)
-    (setq treemacs-wrap-around t)
-  :bind
-  (:map global-map
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+  (treemacs-follow-mode -1)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode t)
+  (setq treemacs-wrap-around t)
+  (when +treemacs-git-mode
+    ;; If they aren't supported, fall back to simpler methods
+    (when (and (memq +treemacs-git-mode '(deferred extended))
+               (not (executable-find "python3")))
+      (setq +treemacs-git-mode 'simple))
+    (treemacs-git-mode +treemacs-git-mode)
+    (setq treemacs-collapse-dirs
+          (if (memq treemacs-git-mode '(extended deferred))
+              3
+            0)))
+        )
 
 (use-package treemacs-icons-dired
   :after treemacs dired
@@ -1301,6 +1231,7 @@ For instance pass En as source for English."
 
 (use-package treemacs-magit
   :after treemacs magit)
+
 #+end_SRC
 
 *** Tufte Style
@@ -1378,7 +1309,8 @@ For instance pass En as source for English."
   "2" 'winum-select-window-2
   "3" 'winum-select-window-3)
 :config
-(setq winum-auto-setup-mode-line nil)
+  (setq winum-auto-setup-mode-line nil)
+  (winum-mode 1)
 )
 #+END_SRC
 
@@ -1992,6 +1924,9 @@ syntax highlighting when viewing in the org-mode buffer.
 
 #+BEGIN_src emacs-lisp :tangle ~/.emacs.d/elisp/base-org.el
 (setq org-src-fontify-natively t)
+(set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-tag nil :inherit '(fixed-pitch shadow))
 #+END_SRC
 
 **** Inserting Structure Template Blocks
@@ -2637,13 +2572,13 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 #+END_SRC
    [2018-08-01 Wed 12:03]
 **** Exporter Setup
-
 #+BEGIN_src emacs-lisp :tangle ~/.emacs.d/elisp/base-org.el
 (setq org-alphabetical-lists t)
 (setq org-ditaa-jar-path "~/org/Misc/ditaa.jar")
 (setq org-plantuml-jar-path "~/org/Misc/plantuml.jar")
 
 #+END_SRC
+
 **** Org-babel setup
 
 #+BEGIN_src emacs-lisp :tangle ~/.emacs.d/elisp/base-org.el
@@ -3090,7 +3025,6 @@ See `org-capture-templates' for more information."
 #+end_src
 
 *** Org Superstar
-
 #+begin_SRC emacs-lisp :tangle ~/.emacs.d/elisp/base-extensions.el 
 (use-package org-superstar
 					; :general
@@ -3099,6 +3033,7 @@ See `org-capture-templates' for more information."
   (setq org-superstar-special-todo-items t)
   )
 #+end_SRC
+
 *** Org Bullets
 [2018-12-03 Mon 10:42]
 #+begin_src emacs-lisp :tangle no
@@ -3289,57 +3224,6 @@ containing the current file by the default explorer."
 (defun show-messages-buffer ()
   (interactive)
   (switch-to-buffer "*Messages*"))
-
-(defun disable-all-themes ()
-  "disable all active themes."
-  (dolist (i custom-enabled-themes)
-    (disable-theme i)
-;    (powerline-reset)
-))
-
-; (defadvice load-theme (before disable-themes-first activate)
-;  (disable-all-themes)
-;  (powerline-reset)
-; )
-
-;; Following lines to cycle through themes adapted from ivan's answer on
-;; https://emacs.stackexchange.com/questions/24088/make-a-function-to-toggle-themes
-(setq my/themes (custom-available-themes))
-(setq my/themes-index 0)
-
-(defun my/cycle-theme ()
-  "Cycles through my themes."
-  (interactive)
-  (setq my/themes-index (% (1+ my/themes-index) (length my/themes)))
-  (my/load-indexed-theme))
-
-(defun my/load-indexed-theme ()
-  (load-theme (nth my/themes-index my/themes)))
-
-(defun load-spacemacs-dark-theme ()
-  "Loads `spacemacs-dark' theme"
-  (interactive)
-  (load-theme 'spacemacs-dark))
-
-(defun load-spacemacs-light-theme ()
-  "Loads `spacemacs-light' theme"
-  (interactive)
-  (load-theme 'spacemacs-light))
-
-(defun load-poet-theme ()
-  "Loads `poet' theme"
-  (interactive)
-  (load-theme 'poet))
-
-(defun load-leuven-theme ()
-  "Loads `leuven' theme"
-  (interactive)
-  (load-theme 'leuven))
-
-(defun load-dichromacy-theme ()
-  "Loads `dichromacy' theme"
-  (interactive)
-  (load-theme 'dichromacy))
 
 (defun org-babel-tangle-append ()
   "Append source code block at point to its tangle file.

@@ -407,6 +407,9 @@
 (setq org-cycle-include-plain-lists t)
 
 (setq org-src-fontify-natively t)
+(set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-tag nil :inherit '(fixed-pitch shadow))
 
 (defun bh/mark-next-parent-tasks-todo ()
   "Visit each parent task and change NEXT states to TODO"
